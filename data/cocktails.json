@@ -1,0 +1,46 @@
+{
+	"cocktails": [
+		{
+			"name": "Old Fashioned",
+			"handle": "old-fashioned",
+			"glasswear": "Rocks Glass",
+			"alcohol": "Whiskey",
+			"ingredients": [
+				{
+					"amount": "2oz",
+					"ingredient": "bourbon or rye whiskey"
+				},
+				{
+					"amount": "1/4 oz",
+					"ingredient": "simple syrup"
+				},
+				{
+					"amount": "2 dashes",
+					"ingredient": "Angostura bitters"
+				}
+			],
+			"instructions": "Combine the whiskey, syrup, and bitters in a mixing glass. Fill 3/4 of the glass with ice. Stir until chilled, about 30 seconds. Strain the drink into a rocks glass filled with ice (or one large cube). Garnish with an expressed orange twist."
+		},
+		{
+			"name": "Manhattan",
+			"handle": "manhattan",
+			"glasswear": "Coupe, Martini Glass",
+			"alcohol": "Whiskey",
+			"ingredients": [
+				{
+					"amount": "2oz",
+					"ingredient": "rye whiskey"
+				},
+				{
+					"amount": "1oz",
+					"ingredient": "sweet vermouth"
+				},
+				{
+					"amount": "2 dashes",
+					"ingredient": "orange bitters"
+				}
+			],
+			"instructions": "Combine the whiskey, vermouth, and bitters in a mixing glass. Fill 3/4 of the glass with ice. Stir until chilled, about 30 seconds. Strain the drink into a coupe or martini glass and garnish with a high-quality cocktail cherry"
+		}
+	]
+}
