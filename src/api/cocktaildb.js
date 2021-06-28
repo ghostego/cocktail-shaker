@@ -14,6 +14,14 @@ export async function getCocktailsByIngredient(q, fn) {
 				.catch(function(error) { console.log(error)})
 }
 
-export async function getCocktailDetails(q) {
-	axios.get(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${q}`).then((res) => {console.log(res.data.drinks)});
+export async function getCocktailDetails(q, fn) {
+	axios.get(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${q}`).then((res) => {
+		if (res.data) {
+			fn(res.data.drinks);
+			return(res.data.drinks);
+		} else {
+			alert("No Details Found")
+			fn([])
+		}
+	});
 }
