@@ -11,6 +11,7 @@ class Search extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 		this.setCocktails = this.setCocktails.bind(this);
+    this.getCocktails = this.getCocktails.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
@@ -20,10 +21,15 @@ class Search extends React.Component {
     if (this.state.currentInput === '') {
       return;
     }
-    this.setState((prevState) => ({
-      q: [...prevState.q, this.state.currentInput],
-      currentInput: ''
-    }));
+    this.setState(
+      (prevState) => ({
+        q: [...prevState.q, this.state.currentInput],
+        currentInput: "",
+      }), function() {
+        this.getCocktails()
+      }
+    );
+    
   }
 
   handleChange(event) {
@@ -34,8 +40,12 @@ class Search extends React.Component {
 		this.setState({results: cocktails})
 	}
 
-  handleSubmit(event) {
+  getCocktails() {
     getCocktailsByIngredient(this.state.q, this.setCocktails);
+  }
+
+  handleSubmit(event) {
+    this.getCocktails();
     event.preventDefault();
   }
 
@@ -44,7 +54,9 @@ class Search extends React.Component {
     let index = array.indexOf(event.textContent);
     if (index !== -1) {
       array.splice(index, 1);
-      this.setState({q: array})
+      this.setState({q: array}, function() {
+        this.getCocktails();
+      })
     }
   }
 
