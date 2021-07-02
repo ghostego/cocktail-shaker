@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export async function getCocktailsByIngredient(q, fn) {
-	axios.get(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${q}`)
+	axios.get(`https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?i=${q}`)
 				.then((res) => {
 					if (res.data) {
 						fn(res.data.drinks); 
@@ -15,7 +15,7 @@ export async function getCocktailsByIngredient(q, fn) {
 }
 
 export async function getCocktailDetails(q, fn) {
-	axios.get(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${q}`).then((res) => {
+	axios.get(`https://www.thecocktaildb.com/api/json/v2/9973533/lookup.php?i=${q}`).then((res) => {
 		if (res.data) {
 			fn(res.data.drinks);
 			return(res.data.drinks);
