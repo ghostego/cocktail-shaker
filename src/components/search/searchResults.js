@@ -5,6 +5,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import { getCocktailDetails } from "../../api/cocktaildb";
 
@@ -37,31 +38,16 @@ function cocktailDetails(obj) {
       const currentMeasure = `strMeasure${i}`;
       cocktailIngredients.push(
         <div>
-          <span>{cocktailObject[currentMeasure]}</span>
+          <span>{cocktailObject[currentMeasure]} </span>
           <span>{cocktailObject[currentIng]}</span>
         </div>
       );
     }
-    cocktailIngredients.push(<p>{cocktailObject["strInstructions"]}</p>);
 	}
 		if (cocktailIngredients) {
 			return cocktailIngredients;
 		}
   }
-}
-
-class HoverElement extends React.Component {
-	
-	render() {
-		let hoverDisplay = this.props.visible ? 
-      <div id="hoverElement" style={{position: 'fixed', left: this.props.mouseX, top: this.props.mouseY, width: 200, height: 200, backgroundColor: 'red'}}>
-        {this.props.ingredients ? this.props.ingredients : "No Ingredients"}
-      </div>
-     : null;
-
-		 return <div>{hoverDisplay}</div>
-		
-	}
 }
 
 class SearchResults extends React.Component {
@@ -85,11 +71,8 @@ class SearchResults extends React.Component {
 
 	setCocktailTooltip(obj) {
 		const ingredients = cocktailDetails(obj);
+    console.log()
 		this.setState({ingredients: ingredients, tooltipVisible: true});
-	}
-
-	_onMouseMove(e) {
-		this.setState({mouseX: e.screenX, mouseY: e.screenY})
 	}
 
   render() {
@@ -99,23 +82,33 @@ class SearchResults extends React.Component {
       return (
         <TableRow id={drink.idDrink}>
           <TableCell>
-            <img className={classes.image} alt={drink.strDrink} src={drink.strDrinkThumb} />
+            <img
+              className={classes.image}
+              alt={drink.strDrink}
+              src={drink.strDrinkThumb}
+            />
           </TableCell>
           <TableCell>
-            <Link
-              onMouseOver={this.cocktailHover}
-              data-id={drink.idDrink}
-              to={idLink}
+            <Tooltip
+              title={this.state.ingredients}
+              enterDelay={300}
             >
-              {drink.strDrink}
-            </Link>
+              <Link
+                onMouseOver={this.cocktailHover}
+                onMouseOut={this.cocktailUnhover}
+                data-id={drink.idDrink}
+                to={idLink}
+              >
+                {drink.strDrink}
+              </Link>
+            </Tooltip>
           </TableCell>
         </TableRow>
       );
     });
 
     return (
-      <div onMouseMove={this._onMouseMove.bind(this)}>
+      <div>
         <TableContainer>
           <Table>
             <TableBody>
@@ -128,13 +121,6 @@ class SearchResults extends React.Component {
                   </TableCell>
                 </TableRow>
               )}
-              <HoverElement
-                ingredients={this.state.ingredients}
-                visible={this.state.tooltipVisible}
-								mouseX={this.state.mouseX}
-								mouseY={this.state.mouseY}
-                dangerouslySetInnerHTML={{ __html: this.state.ingredients }}
-              />
             </TableBody>
           </Table>
         </TableContainer>
