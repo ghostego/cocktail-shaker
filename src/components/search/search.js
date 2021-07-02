@@ -12,14 +12,18 @@ class Search extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
 		this.setCocktails = this.setCocktails.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleAdd(event) {
+    event.preventDefault();
+    if (this.state.currentInput === '') {
+      return;
+    }
     this.setState((prevState) => ({
       q: [...prevState.q, this.state.currentInput],
       currentInput: ''
     }));
-    event.preventDefault();
   }
 
   handleChange(event) {
@@ -35,6 +39,15 @@ class Search extends React.Component {
     event.preventDefault();
   }
 
+  handleDelete(event) {
+    let array = this.state.q;
+    let index = array.indexOf(event.textContent);
+    if (index !== -1) {
+      array.splice(index, 1);
+      this.setState({q: array})
+    }
+  }
+
   render() {
     return (
       <div>
@@ -44,6 +57,7 @@ class Search extends React.Component {
           onSubmit={this.handleSubmit}
           input={this.state.currentInput}
           query={this.state.q}
+          onDelete={this.handleDelete}
         />
         <SearchResults results={this.state.results} />
       </div>
