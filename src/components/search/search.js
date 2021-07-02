@@ -6,15 +6,24 @@ import { getCocktailsByIngredient } from "../../api/cocktaildb";
 class Search extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { q: "", results: [] };
+    this.state = { currentInput: '', q: [], results: [] };
 
 		this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 		this.setCocktails = this.setCocktails.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
+  }
+
+  handleAdd(event) {
+    this.setState((prevState) => ({
+      q: [...prevState.q, this.state.currentInput],
+      currentInput: ''
+    }));
+    event.preventDefault();
   }
 
   handleChange(event) {
-    this.setState({ q: event.target.value });
+    this.setState({ currentInput: event.target.value });
   }
 
 	setCocktails(cocktails) {
@@ -29,7 +38,13 @@ class Search extends React.Component {
   render() {
     return (
       <div>
-        <SearchBar onChange={this.handleChange} onSubmit={this.handleSubmit} query={this.state.q} />
+        <SearchBar
+          onChange={this.handleChange}
+          onAdd={this.handleAdd}
+          onSubmit={this.handleSubmit}
+          input={this.state.currentInput}
+          query={this.state.q}
+        />
         <SearchResults results={this.state.results} />
       </div>
     );
