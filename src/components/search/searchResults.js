@@ -94,7 +94,7 @@ class SearchResults extends React.Component {
 
   render() {
     const { classes } = this.props;
-    var results = this.props.results.map((drink) => {
+    var results = Array.isArray(this.props.results) && this.props.results.map((drink) => {
       let idLink = `/drink/${drink.idDrink}`;
       return (
         <TableRow id={drink.idDrink}>
