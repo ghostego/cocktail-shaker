@@ -37,7 +37,7 @@ function cocktailDetails(obj) {
       const currentIng = `strIngredient${i}`;
       const currentMeasure = `strMeasure${i}`;
       cocktailIngredients.push(
-        <div>
+        <div key={i}>
           <span>{cocktailObject[currentMeasure]} </span>
           <span>{cocktailObject[currentIng]}</span>
         </div>
@@ -53,7 +53,7 @@ function cocktailDetails(obj) {
 class SearchResults extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { ingredients: null, tooltipVisible: false, mouseX: null, mouseY: null };
+    this.state = { ingredients: '' };
 
 		this.setCocktailTooltip = this.setCocktailTooltip.bind(this);
 		this.cocktailHover = this.cocktailHover.bind(this);
@@ -66,13 +66,12 @@ class SearchResults extends React.Component {
 	}
 
 	cocktailUnhover() {
-		this.setCocktailTooltip({ingredients: null, tooltipVisible: false})
+		this.setCocktailTooltip({ingredients: ''})
 	}
 
 	setCocktailTooltip(obj) {
 		const ingredients = cocktailDetails(obj);
-    console.log()
-		this.setState({ingredients: ingredients, tooltipVisible: true});
+		this.setState({ingredients: ingredients});
 	}
 
   render() {
@@ -80,7 +79,7 @@ class SearchResults extends React.Component {
     var results = Array.isArray(this.props.results) && this.props.results.map((drink) => {
       let idLink = `/drink/${drink.idDrink}`;
       return (
-        <TableRow id={drink.idDrink}>
+        <TableRow id={drink.idDrink} key={drink.idDrink}>
           <TableCell>
             <img
               className={classes.image}
@@ -90,7 +89,7 @@ class SearchResults extends React.Component {
           </TableCell>
           <TableCell>
             <Tooltip
-              title={this.state.ingredients}
+              title={this.state.ingredients ? this.state.ingredients : ''}
               enterDelay={300}
             >
               <Link

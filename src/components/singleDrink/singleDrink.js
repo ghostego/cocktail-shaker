@@ -53,7 +53,6 @@ class SingleDrinkContainer extends React.Component {
 	}
 
 	render() {
-		const drinkContent = this.buildDrink()
 		return (
 			<div>
 				{this.state.cocktail ? this.buildDrink() : null}

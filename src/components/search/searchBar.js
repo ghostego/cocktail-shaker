@@ -37,7 +37,7 @@ class SearchBar extends React.Component {
         <form onSubmit={this.onSubmit}>
           <input type="submit" value="Search" />
         </form>
-        {this.props.query.map(v => <Chip onDelete={this.handleDelete} label={v}></Chip>)}
+        {this.props.query.map(v => <Chip onDelete={this.handleDelete} key={v} label={v}></Chip>)}
       </div>
     );
 	}
