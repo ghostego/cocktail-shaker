@@ -55,7 +55,11 @@ class Search extends React.Component {
     if (index !== -1) {
       array.splice(index, 1);
       this.setState({q: array}, function() {
-        this.getCocktails();
+        if (array.length === 0) {
+          this.setState({results: []});
+        } else {
+          this.getCocktails();
+        }
       })
     }
   }

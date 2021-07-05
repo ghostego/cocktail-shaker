@@ -32,21 +32,22 @@ class SingleDrinkContainer extends React.Component {
 			let obj = this.state.cocktail;
 			let cocktailIngredients = [];
 			let cocktailObject = obj[0];
-			cocktailIngredients.push(<h1>{cocktailObject['strDrink']}	</h1>)
-			cocktailIngredients.push(<h3>{cocktailObject['strGlass']}</h3>)
+			cocktailIngredients.push(<h1 key="title">{cocktailObject['strDrink']}	</h1>)
+			cocktailIngredients.push(<h3 key="glass">{cocktailObject['strGlass']}</h3>)
 			cocktailIngredients.push(
         <img
 					style={{'maxWidth': 400}}
           src={cocktailObject["strDrinkThumb"]}
           alt={cocktailObject["strDrink"]}
+					key="image"
         />
       );
 			for (let i = 1; i < 15; i++) {
 				const currentIng = `strIngredient${i}`;
 				const currentMeasure = `strMeasure${i}`;
-				cocktailIngredients.push(<div><span>{cocktailObject[currentMeasure]}</span><span>{cocktailObject[currentIng]}</span></div>);
+				cocktailIngredients.push(<div key={i}><span>{cocktailObject[currentMeasure]}</span><span>{cocktailObject[currentIng]}</span></div>);
 			}
-			cocktailIngredients.push(<p>{cocktailObject['strInstructions']}</p>)
+			cocktailIngredients.push(<p key="instructions">{cocktailObject['strInstructions']}</p>)
 			
 			return cocktailIngredients;
 		}
