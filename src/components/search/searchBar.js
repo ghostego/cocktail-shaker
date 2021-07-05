@@ -1,6 +1,11 @@
 import React from 'react';
+import Chip from "@material-ui/core/Chip";
 
 class SearchBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleDelete = this.handleDelete.bind(this)
+  }
 
   onAdd = (e) => {
     this.props.onAdd(e)
@@ -13,6 +18,10 @@ class SearchBar extends React.Component {
 	onSubmit = (e) => {
 		this.props.onSubmit(e);
 	}
+
+  handleDelete = (e) => {
+    this.props.onDelete(e.currentTarget.previousElementSibling);
+  }
 
 	render() {
 		return (
@@ -28,7 +37,7 @@ class SearchBar extends React.Component {
         <form onSubmit={this.onSubmit}>
           <input type="submit" value="Search" />
         </form>
-        {this.props.query.map(v => <div>{v}</div>)}
+        {this.props.query.map(v => <Chip onDelete={this.handleDelete} key={v} label={v}></Chip>)}
       </div>
     );
 	}
