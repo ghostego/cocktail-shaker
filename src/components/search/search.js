@@ -16,17 +16,47 @@ class Search extends React.Component {
     this.handleDelete = this.handleDelete.bind(this);
   }
 
+  componentDidMount() {
+    if (sessionStorage.getItem("queries")) {
+      const queries = sessionStorage.getItem("queries").split(',');
+      this.setState({q: queries})
+      this.setState(
+        () => ({
+          q: queries,
+          currentInput: "",
+        }),
+        function () {
+          this.getCocktails();
+        }
+      );
+    }
+  }
+
   handleAdd(event) {
     event.preventDefault();
-    if (this.state.currentInput === '') {
+    let localQueries = [];
+    let storage = [];
+    const currentInput = this.state.currentInput;
+    if (sessionStorage.queries) {
+      storage = sessionStorage.queries.split(',');
+    }
+    localQueries = storage;
+    if (currentInput === "") {
       return;
     }
+    if (storage.indexOf(currentInput) !== -1) {
+      this.setState({currentInput: ''});
+      return
+    }
+    localQueries.push(currentInput);
+    sessionStorage.setItem("queries", localQueries.join());
     this.setState(
       (prevState) => ({
-        q: [...prevState.q, this.state.currentInput],
+        q: [...prevState.q, currentInput],
         currentInput: "",
-      }), function() {
-        this.getCocktails()
+      }),
+      function () {
+        this.getCocktails();
       }
     );
     
@@ -51,9 +81,13 @@ class Search extends React.Component {
 
   handleDelete(event) {
     let array = this.state.q;
+    let localQueries = sessionStorage.queries.split(',');
+    let queriesIndex = array.indexOf(event.textContent);
     let index = array.indexOf(event.textContent);
     if (index !== -1) {
       array.splice(index, 1);
+      localQueries.splice(queriesIndex, 1);
+      sessionStorage.setItem("queries", localQueries.join());
       this.setState({q: array}, function() {
         if (array.length === 0) {
           this.setState({results: []});
