@@ -30,7 +30,7 @@ function App() {
 function Home() {
   return (
     <div className="App">
-      <h1>Find some cocktails</h1>
+      <h1>Cocktail Shaker</h1>
       <Search />
     </div>
   )
