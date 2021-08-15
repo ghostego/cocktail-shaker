@@ -2,6 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/styles';
 import { withRouter } from "react-router";
 import { getCocktailDetails } from "../../api/cocktaildb";
+import { BackButton } from '../backButton/backButton';
 
 
 const useStyles = (theme) => ({
@@ -84,10 +85,11 @@ class SingleDrinkContainer extends React.Component {
       );
     }
 		return (
-			<div>
-				{recipe}
-			</div>
-		)
+      <div>
+        <BackButton class={"recipe"} />
+        {recipe}
+      </div>
+    );
 	}
 }
 
