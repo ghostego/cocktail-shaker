@@ -1,65 +1,96 @@
 import React from 'react';
-import {
-  useParams
-} from "react-router-dom";
+import { withStyles } from '@material-ui/styles';
+import { withRouter } from "react-router";
 import { getCocktailDetails } from "../../api/cocktaildb";
+import { BackButton } from '../backButton/backButton';
 
-function SingleDrink() {
-	let { id } = useParams();
 
-	return  <SingleDrinkContainer id={id} />;
-}
+const useStyles = (theme) => ({
+  recipeContainer: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  recipeImage: {
+    maxWidth: "35%",
+    height: "35%",
+    objectFit: "contain",
+  },
+  recipeContent: {
+    display: "flex",
+    flexDirection: "column",
+    maxWidth: "65%",
+    padding: "0 15px 10px",
+		"& h1": {
+			marginTop: 0
+		},
+		"& h3": {
+			marginTop: 0
+		}
+  },
+  recipeIngredients: {
+		"& span:first-child": {
+			marginRight: "10px"
+		}
+	}
+});
 
 class SingleDrinkContainer extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { id: this.props.id, cocktail: null }
+		this.state = { id: null, cocktail: null }
 
 		this.setCocktail = this.setCocktail.bind(this);
-		this.buildDrink = this.buildDrink.bind(this);
-	}
-
-	setCocktail(cocktailObj) {
-		this.setState({cocktail: cocktailObj})
 	}
 
 	componentDidMount() {
-		getCocktailDetails(this.props.id, this.setCocktail);
+		const id = this.props.match.params.id;
+		this.setState({id: id}, function(){getCocktailDetails(this.state.id, this.setCocktail)})
 	}
 
-	buildDrink() {
-		if (this.state.cocktail) {
-			let obj = this.state.cocktail;
-			let cocktailIngredients = [];
-			let cocktailObject = obj[0];
-			cocktailIngredients.push(<h1 key="title">{cocktailObject['strDrink']}	</h1>)
-			cocktailIngredients.push(<h3 key="glass">{cocktailObject['strGlass']}</h3>)
-			cocktailIngredients.push(
-        <img
-					style={{'maxWidth': 400}}
-          src={cocktailObject["strDrinkThumb"]}
-          alt={cocktailObject["strDrink"]}
-					key="image"
-        />
-      );
-			for (let i = 1; i < 15; i++) {
-				const currentIng = `strIngredient${i}`;
-				const currentMeasure = `strMeasure${i}`;
-				cocktailIngredients.push(<div key={i}><span>{cocktailObject[currentMeasure]}</span><span>{cocktailObject[currentIng]}</span></div>);
-			}
-			cocktailIngredients.push(<p key="instructions">{cocktailObject['strInstructions']}</p>)
-			
-			return cocktailIngredients;
-		}
+	setCocktail(cocktailObj) {
+		this.setState({cocktail: cocktailObj[0]})
 	}
 
 	render() {
+		const { classes } = this.props;
+		let recipe;
+		const recipeIngredients = [];
+		let cocktail = this.state.cocktail;
+		
+		if (cocktail) {
+			for (let i = 1; i < 15; i++) {
+				const currentIng = `strIngredient${i}`;
+				const currentMeasure = `strMeasure${i}`;
+				if (cocktail[currentMeasure] && cocktail[currentIng]) {
+					recipeIngredients.push(<div key={i}><span>{cocktail[currentMeasure]}</span><span>{cocktail[currentIng]}</span></div>);
+				}
+			}
+      recipe = (
+        <div className={classes.recipeContainer}>
+          <img
+            className={classes.recipeImage}
+            src={cocktail["strDrinkThumb"]}
+            alt={cocktail["strDrink"]}
+            key="image"
+          />
+          <div className={classes.recipeContent}>
+            <h1 key="title">{cocktail["strDrink"]} </h1>
+            <h3 key="glass">Glass Type: {cocktail["strGlass"]}</h3>
+            <div className={classes.recipeIngredients}><strong>Ingredients</strong>{recipeIngredients}</div>
+            <div className={classes.recipeInstructions}>
+              <p key="instructions">{cocktail["strInstructions"]}</p>
+            </div>
+          </div>
+        </div>
+      );
+    }
 		return (
-			<div>
-				{this.state.cocktail ? this.buildDrink() : null}
-			</div>
-		)
+      <div>
+        <BackButton class={"recipe"} />
+        {recipe}
+      </div>
+    );
 	}
 }
 
-export default SingleDrink;
+export default withRouter(withStyles(useStyles)(SingleDrinkContainer));

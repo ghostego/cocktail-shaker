@@ -1,0 +1,9 @@
+.recipe {
+	border: 1px solid #fce;
+	color: #fce;
+	border-radius: 0;
+	background-color: black;
+	padding: 5px 10px;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
